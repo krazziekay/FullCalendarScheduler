@@ -89,7 +89,7 @@ let initializeScheduler = () => {
             } else if (view === 'timelineDay') {
                 el.find('.fc-cell-content').append(
                     $('<small>(' + resource.eachTotalJobs + ')</small>').popover({
-                        title: resource.title,
+                        title: resource.title || '',
                         content: 'Total Jobs : ' + resource.eachTotalJobs,
                         trigger: 'hover',
                         placement: 'bottom',
