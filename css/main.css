@@ -132,7 +132,7 @@ body {
 }
 
 .fc-view.fc-agendaDay-view.fc-agenda-view {
-    width: 500%;
+/*     width: 500%; */
 }
 
 /*CSS for the height in agendaDay View in scheduler*/
