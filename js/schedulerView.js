@@ -401,9 +401,9 @@ let saveJob = (status) => {
  */
 let setDispatch = (status) => {
     if (status)
-        $('#dispatch_status_id').val(2);
+        $('#dispatchStatus').val(2);
     else
-        $('#dispatch_status_id').val(1);
+        $('#dispatchStatus').val(1);
     addScheduleJob(getFormParamsAndConvertToObject($('#schedulerForm2').serializeArray()));
 
 };
