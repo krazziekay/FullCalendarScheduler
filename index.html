@@ -1,0 +1,1006 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Place favicon.ico in the root directory -->
+    <link rel="stylesheet" href="lib/css/fontawesome.css">
+    <link rel="stylesheet" href="lib/css/pe-fonts.css">
+    <link rel="stylesheet" href="lib/css/bootstrap.css">
+    <link rel="stylesheet" href="lib/css/bootstrap-datepicker.css">
+    <!--<link rel="stylesheet" href="lib/css/materialdesign.css">-->
+    <link rel="stylesheet" href="lib/css/daterangepicker.css">
+    <link rel="stylesheet" href="lib/css/fullcalendar.min.css">
+    <link rel="stylesheet" href="lib/css/fullcalendar.print.min.css" media='print'>
+    <link rel="stylesheet" href="lib/css/scheduler.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/util.css">
+    <link rel="stylesheet" href="css/toastr.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+
+    <meta name="theme-color" content="#fafafa">
+</head>
+<body>
+
+
+<div id="schedulerWrapper">
+    <!--Header for the Scheduler-->
+    <div id="schedulerHeader" class="p-l-12 p-r-12 p-t-8">
+        <div class="fc-toolbar">
+            <div class="fc-left">
+                <button type="button"
+                        class="btn btn-info btn-outline fc-jobFilter-button fc-button fc-state-default fc-corner-left fc-corner-right"
+                        onclick="toggleSideBar(1)">
+                    Job Filter
+                </button>
+            </div>
+            <div class="fc-center">
+                <button type="button"
+                        class=" btn btn-info btn-outline fc-prev-button fc-button fc-state-default fc-corner-left fc-corner-right"
+                        aria-label="prev"
+                        onclick="goToPreviousDate()"><span class="fc-icon fc-icon-left-single-arrow"></span></button>
+                <input type="text" id="schedulerHeaderDatePicker"/>
+                <button type="button"
+                        class=" btn btn-info btn-outline fc-next-button fc-button fc-state-default fc-corner-left fc-corner-right"
+                        aria-label="next" onclick="goToNextDate()"><span
+                        class="fc-icon fc-icon-right-single-arrow"></span></button>
+                <button type="button"
+                        onclick="goToToday()"
+                        class="btn btn-info btn-outline fc-today-button fc-button fc-state-default fc-corner-left fc-corner-right">
+                    Today
+                </button>
+            </div>
+            <div class="fc-right">
+                <button type="button" onclick="setForms(moment(), moment(), {}, 1)"
+                        class=" btn btn-info btn-outline fc-addResource-button fc-button fc-state-default fc-corner-left fc-corner-right">
+                    Add Resource
+                </button>
+                <button type="button" onclick="setForms(moment(), moment(), {}, 2)"
+                        class=" btn btn-info btn-outline fc-addEvent-button fc-button fc-state-default fc-corner-left fc-corner-right">
+                    Add Event
+                </button>
+                <button type="button" onclick="changeView()"
+                        class=" btn btn-info btn-outline fc-changeView-button fc-button fc-state-default fc-corner-left fc-corner-right">
+                    Change View
+                </button>
+            </div>
+            <div class="fc-clear"></div>
+        </div>
+    </div>
+
+    <!--Scheduler-->
+    <div id='scheduler'></div>
+</div>
+
+<!--Resource Adding Form-->
+<div id="resourceModalWrapper">
+    <button hidden type="button" id="resourceModalBtn" data-toggle="modal" data-target="#resourceModal">Launch modal
+    </button>
+    <div class="modal fade" id="resourceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Resource</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+                <div class="modal-body">
+                    <form action="" id="schedulerForm1">
+                        <div class="form-row md-form mb-0">
+                            <div class="col ">
+                                <input type="text" name="techFirstName" id="techFirstName" class="form-control">
+                                <label for="techFirstName">First name</label>
+                            </div>
+                            <div class="col">
+                                <input type="text" name="techLastName" id="techLastName" class="form-control">
+                                <label for="techLastName">Last name</label>
+                            </div>
+                        </div>
+                        <div class="form-row md-form">
+                            <div class="col">
+                                <span>Preferred Invoice</span>
+                                <select name="techPreferredInvoice" id="techPreferredInvoice"
+                                        class="browser-default custom-select">
+                                    <option value="" disabled>Choose option</option>
+                                    <option value="1" selected>Feedback</option>
+                                    <option value="2">Report a bug</option>
+                                    <option value="3">Feature request</option>
+                                    <option value="4">Feature request</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                                    </div>
+                                    <div class="custom-file">
+                                        <input name="inputGroupFileAddon01" type="file" class="custom-file-input"
+                                               id="inputGroupFile01"
+                                               aria-describedby="inputGroupFileAddon01">
+                                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-row md-form mb-0">
+                            <div class="col">
+                                <input name="techEmail" type="email" id="techEmail" class="form-control">
+                                <label for="techEmail">Email</label>
+                            </div>
+                            <div class="col">
+                                <input name="techPhone" type="tel" id="techPhone" class="form-control">
+                                <label for="techPhone">Phone</label>
+                            </div>
+                        </div>
+                        <div class="form-row md-form mb-0">
+                            <div class="col">
+                                <input name="techPassword" type="password" id="techPassword" class="form-control">
+                                <label for="techPassword">Password</label>
+                            </div>
+                            <div class="col">
+                                <input name="techConfirmPassword" type="password" id="techConfirmPassword"
+                                       class="form-control">
+                                <label for="techConfirmPassword">Confirm Password</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="addEntity(1)" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Event Adding Form-->
+<div id="eventModalWrapper" class="side-nav">
+    <div class="panel-heading hbuilt top-form-header">
+        <div class="panel-tools">
+            <div class="pull-right">
+                <a class="btn btn-danger2 btn-outline btn-xs panel-hide"
+                   onclick="toggleSideBar(2, true)"><i class="fa fa-times "></i></a>
+            </div>
+        </div>
+        <ul class="job-options btn-group m-b-0">
+            <li class="service-options-li active">
+                <span class="cursor-pointer btn btn-xs btn-primary btn-outline" data-toggle="tab"
+                      onclick="changeTab(1, this)">Job</span>
+            </li>
+            <li class="service-options-li">
+                <span class="cursor-pointer btn btn-xs btn-primary btn-outline" data-toggle="tab"
+                      onclick="changeTab(2, this)">Time Block</span>
+            </li>
+            <li class="service-options-li">
+                <span class="cursor-pointer btn btn-xs btn-primary btn-outline" data-toggle="tab"
+                      onclick="changeTab(3, this)">Task</span>
+            </li>
+        </ul>
+    </div>
+    <div id="tab1">
+        <div class="hpanel m-b-0">
+            <div class="panel-body m-t-8 m-l-8 m-r-8 client_address-search">
+                <h3 class="center-align">Start Here</h3>
+                <div class="input-group">
+
+                    <input class="form-control" id="clientAddressSearch" name="full_address" type="text"
+                           autofocus="" autocomplete="off" placeholder="Enter a location">
+
+                    <span class="input-group-btn">
+                        <button id="existingClientSearchBtn" type="button" class="btn btn-default">
+                            <i class="fa fa-search search_popup fs-22"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="p-l-8 p-r-8 p-t-8 clearfix" id="existingClientsTableWrapper" style="display: none;">
+
+                <table class="table table-striped table-bordered table-hover m-b-0">
+                    <thead>
+                    <tr>
+                        <th scope="col" nowrap="nowrap">Client Name</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">suburb</th>
+                    </tr>
+                    </thead>
+                    <tbody id="existingClientsTable"></tbody>
+                </table>
+            </div>
+        </div>
+        <form class="form-horizontal" role="form" id="schedulerForm2">
+
+            <!--Client Information-->
+            <div class="hpanel stats sch_clients p-t-0 p-l-8 p-r-8">
+                <div class="panel-heading hbuilt">
+                    Client Information
+                </div>
+                <div class="panel-body">
+                    <input type="hidden" id="dispatchStatus" name="dispatch_status_id" value="1">
+                    <div class="form-group row">
+                        <input class="form-control " id="client_id" name="client_id" value="" type="hidden">
+
+                        <label class="col-sm-4 control-label pull-left" for="first_name">First Name</label>
+                        <div class="col-sm-8">
+                            <input class="form-control validate[required]" id="first_name" name="first_name" value=""
+                                   type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="last_name">Last Name</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" id="last_name" name="last_name" value="" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row" id="address-client">
+                        <label class="control-label col-sm-4" for="clientAddressSearch2">Address
+                        </label>
+                        <div class="col-sm-8">
+                            <input class="form-control validate[required]" id="clientAddressSearch2" name="full_address"
+                                   value="" type="text">
+                            <input class="form-control" id="clientAddressline" name="addressline" value=""
+                                   type="hidden">
+                            <input class="form-control" id="clientSuburb" name="suburb" value="" type="hidden">
+                            <input class="form-control" id="clientState" name="state" value="" type="hidden">
+                            <input class="form-control" id="clientPostcode" name="postcode" value="" type="hidden">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="client_typeid">Client Type</label>
+                        <div class="col-sm-8">
+                            <select class="form-control validate[required]" name="client_typeid" id="client_typeid">
+                                <option value="">Select Type</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="control-label  col-sm-4 " for="phone">Phone</label>
+                        <div class="col-sm-8">
+                            <input class="form-control phone-number-format" id="phone" name="phone" value="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="mobile">Mobile</label>
+                        <div class="col-sm-8">
+                            <input class="form-control  phone-number-format" id="mobile"
+                                   name="mobile" value="" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="email">Email</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" id="email" name="email" value="">
+                        </div>
+                    </div>
+                    <div class="form-group row m-b-0">
+                        <label class="control-label col-sm-4">Same Billing Address?</label>
+                        <div class="col-sm-8">
+                            <div class="radio" id="billingAddressOption">
+                                <input type="radio" name="sameBillingAddress" id="yes" value="1" checked="">
+                                <label for="yes">
+                                    Yes
+                                </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="sameBillingAddress" id="no" value="0">
+                                <label for="no">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!--billing info-->
+                    <div id="billingAddressWrapper">
+                        <hr>
+                        <h4>Billing Details</h4>
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4" for="mailing_firstname">First Name</label>
+                            <div class="col-sm-8">
+                                <input class="form-control validate[required]" id="mailing_firstname"
+                                       name="mailing_firstname" value="" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4" for="mailing_lastname">Last Name</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="mailing_lastname" name="mailing_lastname">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4" for="mailing_email">Email</label>
+                            <div class="col-sm-8">
+                                <input class="form-control validate[custom[email]]" id="mailing_email"
+                                       name="mailing_email">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4" for="mailing_phone">Phone</label>
+                            <div class="col-sm-8">
+                                <input class="form-control validate[custom[phone]] phone-number-format"
+                                       id="mailing_phone"
+                                       name="mailing_phone" value="" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4" for="mailing_mobile">Mobile</label>
+                            <div class="col-sm-8">
+                                <input class="form-control validate[custom[phone]] phone-number-format"
+                                       id="mailing_mobile"
+                                       name="mailing_mobile" value="" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group row" id="address-mailclient">
+                            <label class="control-label col-sm-4"
+                                   for="mailingClientAddressSearch">Address</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="mailingClientAddressSearch" name="mailing_full_address"
+                                       type="text"
+                                       autofocus="" autocomplete="off" placeholder="Enter a location">
+                                <input class="form-control" id="mailingClientAddressline" name="mailing_addressline"
+                                       value="" type="hidden">
+                                <input class="form-control" id="mailingClientSuburb" name="mailing_suburb" value=""
+                                       type="hidden">
+                                <input class="form-control" id="mailingClientState" name="mailing_state" value=""
+                                       type="hidden">
+                                <input class="form-control" id="mailingClientPostcode" name="mailing_postcode" value=""
+                                       type="hidden">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Job Information-->
+            <div class="hpanel stats sch_job_info p-l-8 p-r-8">
+                <div class="panel-heading hbuilt">
+                    Job Information
+                </div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="job_catid">Job category</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="job_catid" id="job_catid">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+
+                        <label class="control-label col-sm-4" for="job_typeid"> Job type</label>
+                        <div class="col-sm-8">
+                            <select class="form-control validate[required]" name="job_typeid" id="job_typeid">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="job_pid"> Job Priority</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="job_pid" id="job_pid">
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- <input name="job_catid" type="text" value="" id="js_job_catid"> -->
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="title"> Job title</label>
+                        <div class="col-sm-8">
+                            <input name="job_title" type="text" class="form-control validate[required] " value=""
+                                   id="job_title">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4 job_des" for="job_description"> Job
+                            Description</label>
+                        <div class="col-sm-12">
+                        <textarea name="job_description" id="job_description" class="form-control" rows="4"
+                                  style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 94px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="job_calloutfee">Call out Fee</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="job_calloutfee" id="job_calloutfee">
+
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="job_statusid">Job Status</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="job_statusid" id="job_statusid">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="adSource_id">Lead Source</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="adSource_id" id="adSource_id">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Add Visits-->
+            <div class="hpanel stats sch_visits p-l-8 p-r-8">
+                <div class="panel-heading hbuilt">
+                    Add Visits
+                </div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4 job-start-date" for="job_startdate"> Visit
+                            Start</label>
+                        <div class="col-sm-4">
+                            <input name="job_startdate" type="text" id="job_startdate"
+                                   class="form-control datepicker validate[required]">
+                        </div>
+                        <div class="col-sm-4">
+                            <select name="job_starttime" id="job_starttime"
+                                    class="browser-default custom-select">
+                                <option value="" disabled>Choose option</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4 job-end-date" for="job_enddate"> End
+                            time</label>
+                        <div class="col-sm-4">
+                            <input name="job_enddate" type="text"
+                                   class="form-control datepicker validate[required]"
+                                   id="job_enddate">
+                        </div>
+                        <div class="col-sm-4">
+                            <select name="job_endtime" id="job_endtime"
+                                    class="browser-default custom-select">
+                                <option value="" disabled>Choose option</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="job_catid">Assign staff</label>
+                        <div class="col-sm-8">
+                            <select class="form-control validate[required]" id="technicianId" name="technician_id"
+                                    style="width: 100%">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-4" for="visit_note"> Visit Note</label>
+                        <div class="col-sm-12">
+                        <textarea name="visit_note" id="visit_note" class="form-control" rows="4"
+                                  style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 94px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="action_btn sch_form_btn ">
+            <div class="btn btn-block btn-primary save_btn" onclick="saveJob(1)">
+                Save
+            </div>
+        </div>
+    </div>
+    <div id="tab2" style="display: none;" class="hpanel">
+        <div class="panel-heading hbuilt">TIME BLOCK</div>
+        <form id="schedulerForm3">
+            <input type="hidden" name="scheduler_type" value="2"/>
+            <div class="p-l-8 p-r-8 p-t-8 p-b-8">
+                <div class="hpanel m-b-0">
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4 ">Title</label>
+                            <div class="col-sm-8">
+                                <input name="title" type="text" class="form-control validate[required]">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4">Description</label>
+                            <div class="col-sm-8">
+                                <textarea name="description" class="form-control" rows="6"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4 job-end-date" for="taskStartDate"> Start
+                                time</label>
+                            <div class="col-sm-4">
+                                <input name="job_startdate" type="text"
+                                       class="form-control datepicker validate[required]"
+                                       id="timeBlockStartDate">
+                            </div>
+                            <div class="col-sm-4">
+                                <select name="job_starttime" id="timeBlockStartTime"
+                                        class="browser-default custom-select">
+                                    <option value="" disabled>Choose option</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4 job-end-date" for="taskEndDate"> End
+                                time</label>
+                            <div class="col-sm-4">
+                                <input name="job_enddate" type="text"
+                                       class="form-control datepicker validate[required]"
+                                       id="timeBlockEndDate">
+                            </div>
+                            <div class="col-sm-4">
+                                <select name="job_endtime" id="timeBlockEndTime"
+                                        class="browser-default custom-select">
+                                    <option value="" disabled>Choose option</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4">Assign Staff</label>
+                            <div class="col-sm-8">
+                                <select class="form-control validate[required]" id="timeTechnicianId"
+                                        name="technician_id">
+
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="action_btn sch_form_btn ">
+            <div class="btn btn-block btn-primary save_btn" onclick="saveJob(2)">
+                Save
+            </div>
+        </div>
+    </div>
+    <div id="tab3" style="display: none;" class="hpanel">
+        <div class="panel-heading hbuilt">TASK</div>
+        <form id="schedulerForm4">
+            <input type="hidden" name="scheduler_type" value="3"/>
+            <div class="p-l-8 p-r-8 p-t-8 p-b-8">
+                <div class="hpanel m-b-0">
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4 ">Title</label>
+                            <div class="col-sm-8">
+                                <input name="title" type="text" class="form-control validate[required]">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4">Description</label>
+                            <div class="col-sm-8">
+                                <textarea name="description" class="form-control" rows="6"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4 job-end-date" for="taskStartDate"> Start
+                                time</label>
+                            <div class="col-sm-4">
+                                <input name="job_startdate" type="text"
+                                       class="form-control datepicker validate[required]"
+                                       id="taskStartDate">
+                            </div>
+                            <div class="col-sm-4">
+                                <select name="job_starttime" id="taskStartTime"
+                                        class="browser-default custom-select">
+                                    <option value="" disabled>Choose option</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4 job-end-date" for="taskEndDate"> End
+                                time</label>
+                            <div class="col-sm-4">
+                                <input name="job_enddate" type="text"
+                                       class="form-control datepicker validate[required]"
+                                       id="taskEndDate">
+                            </div>
+                            <div class="col-sm-4">
+                                <select name="job_endtime" id="taskEndTime"
+                                        class="browser-default custom-select">
+                                    <option value="" disabled>Choose option</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4">Assign Staff</label>
+                            <div class="col-sm-8">
+                                <select class="form-control validate[required]" id="taskTechnicianId"
+                                        name="technician_id">
+
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="action_btn sch_form_btn ">
+            <div class="btn btn-block btn-primary save_btn" onclick="saveJob(3)">
+                Save
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Scheduler Summary Form-->
+<div id="scheduleSummaryWrapper" class="side-nav">
+    <div class="hpanel">
+        <div class="panel-heading hbuilt">
+            <div class="panel-tools">
+                <div class="pull-right">
+                    <a class="btn btn-danger2 btn-outline btn-xs panel-hide" onclick="toggleSideBar(3, true)"><i
+                            class="fa fa-times "></i></a>
+                </div>
+            </div>
+            Job Details
+        </div>
+        <div class="panel-body pattern main-panel-body">
+            <div class="hpanel">
+                <div class="panel-heading hbuilt clearfix">
+                    <span class="font-weight-bolder indigo-text" id="summaryJobTitle">Job title</span>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        STATUS : <span id="summaryJobStatus">-</span>
+                    </p>
+                    <p class="text-justify">
+                        <span id="summaryJobDescription"></span>
+                    </p>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-3 stats">
+                            <span class="font-weight-bold" id="summaryCalloutFee">-</span>
+                            <small>CALLOUT FEE</small>
+                        </div>
+                        <div class="col-sm-6 col-lg-3 stats">
+                            <span class="font-weight-bold" id="summaryJobType">-</span>
+                            <small>TYPE</small>
+                        </div>
+                        <div class="col-sm-6 col-lg-3 stats">
+                            <span class="font-weight-bold" id="summaryJobCategory">-</span>
+                            <small>CATEGORY</small>
+                        </div>
+                        <div class="col-sm-6 col-lg-3 stats">
+                            <span class="font-weight-bold" id="summaryJobPriority">-</span>
+                            <small>PRIORITY</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="hpanel">
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <h3 class="card-title  mb-0" id="salesAmount">-</h3>
+                            <small class="lead mb-0 fs-12 font-weight-bold mb-0">Total Sold</small>
+                        </div>
+                        <div class="col-sm-4">
+                            <h3 class="card-title text-success mb-0" id="paidAmount">-</h3>
+                            <small class="lead mb-0 fs-12 font-weight-bold mb-0">Total Paid</small>
+                        </div>
+                        <div class="col-sm-4">
+                            <h3 class="card-title text-danger mb-0" id="outstandingAmount">-</h3>
+                            <small class="lead mb-0 fs-12 font-weight-bold mb-0">Outstanding</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hpanel client-info stats">
+                <div class="panel-heading hbuilt">
+                    Client Information
+                </div>
+                <div class="panel-body">
+                    <address>
+                        <strong><span id="summaryClientName">-</span></strong><br>
+                        <abbr title="mobile">Address: <span id="summaryClientAddress"></span></abbr><br>
+                        <abbr title="mobile">Mobile: <span id="summaryClientMobile"></span></abbr><br>
+                        <abbr title="phone">Phone: <span id="summaryClientPhone"></span></abbr><br>
+                        <abbr title="email">Email: <span id="summaryClientEmail"></span> </abbr><br>
+                        <abbr title="email">Client Type: <span id="summaryClientType"></span></abbr><br>
+                    </address>
+                </div>
+            </div>
+
+            <div class="hpanel billing-info stats">
+                <div class="panel-heading hbuilt">
+                    Billing Information
+                </div>
+                <div class="panel-body">
+                    <address>
+                        <strong><span id="summaryBillingClientName">-</span></strong><br>
+                        <abbr title="mobile">Address: <span id="summaryBillingClientAddress"></span></abbr><br>
+                        <abbr title="mobile">Mobile: <span id="summaryBillingClientMobile"></span></abbr><br>
+                        <abbr title="phone">Phone: <span id="summaryBillingClientPhone"></span></abbr><br>
+                        <abbr title="email">Email: <span id="summaryBillingClientEmail"></span> </abbr><br>
+                    </address>
+                </div>
+            </div>
+
+            <div class="hpanel job-schedules stats">
+                <div class="panel-heading hbuilt">
+                    Schedules
+                </div>
+                <div class="clearfix"></div>
+                <div class="panel-body">
+                    <ul class="list-group " id="visitList"></ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!--Time block and Task Summary Form-->
+<div id="taskTimeBlockWrapper" class="side-nav">
+    <div class="hpanel">
+        <div class="panel-heading hbuilt">
+            <div class="panel-tools">
+                <div class="pull-right">
+                    <a class="btn btn-default btn-xs panel-hide" onclick="toggleSideBar(4, true)"><i
+                            class="fa fa-times "></i></a>
+                </div>
+            </div>
+            Block Details
+        </div>
+        <div class="panel-body pattern main-panel-body">
+            <div class="hpanel stats">
+                <div class="panel-heading clearfix">
+                    <div class="panel-tools">
+                        <div class="btn btn-outline btn-danger2 btn-xs" onclick="delTaskTimeBlock()">Delete</div>
+                    </div>
+                </div>
+                <div class="panel-body list">
+                    <form id="blockModal">
+                        <input type="hidden" id="id" name="id">
+
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4 job-start-date" for="editTimeTaskStartdate"> Visit
+                                Start</label>
+                            <div class="col-sm-4">
+                                <input name="job_startdate" type="text" id="editTimeTaskStartDate"
+                                       class="form-control datepicker validate[required]">
+                            </div>
+                            <div class="col-sm-4">
+                                <select name="job_starttime" id="editTimeTaskStartTime"
+                                        class="browser-default custom-select">
+                                    <option value="" disabled>Choose option</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-sm-4 job-start-date" for="editTimeTaskEndDate"> End
+                                Date</label>
+                            <div class="col-sm-4">
+                                <input name="job_enddate" type="text" id="editTimeTaskEndDate"
+                                       class="form-control datepicker validate[required]">
+                            </div>
+                            <div class="col-sm-4">
+                                <select name="job_endtime" id="editTimeTaskEndTime"
+                                        class="browser-default custom-select">
+                                    <option value="" disabled>Choose option</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 control-label pull-left" for="title">Title</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="title"
+                                       name="title" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 control-label pull-left" for="description">Description</label>
+                            <div class="col-sm-8">
+                            <textarea name="description" id="description" class="form-control" rows="4"
+                                      style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 94px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="btn btn-outline btn-info btn-block" onclick="editTaskTimeBlock()">
+                                Update
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Dispatch Confirm Wrapper-->
+<div id="dispatchConfirmWrapper">
+    <button hidden type="button" id="dispatchConfirmBtn" data-toggle="modal" data-target="#dispatchConfirm">Launch
+        modal
+    </button>
+    <div class="modal fade" id="dispatchConfirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Summary</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Do you want to dispatch this job?
+                </div>
+                <div class="modal-footer clearfix">
+                    <button type="button" class="col btn btn-outline btn-info ml-1"
+                            onclick="setDispatch(true)">Dispatch it
+                    </button>
+                    <button type="button" class="col btn btn-outline btn-primary ml-1"
+                            onclick="setDispatch(false)">No, just save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Job Filter Form Wrapper-->
+<div id="jobFilter" class="side-nav">
+    <div class="hpanel p-r-0 p-l-0 mb-0">
+        <div class="panel-heading hbuilt">
+            Jobs
+            <span class="hide-joblist  m-l-15 btn btn-danger2 btn-outline btn-xs cursor-pointer pull-right"
+                  onclick="toggleSideBar(1, true)">
+                <i class="fa fa-times "></i>
+            </span>
+            <span id="jobFilterReset" class="m-l-15 btn btn-warning btn-outline btn-xs cursor-pointer pull-right"
+                  onclick="resetJobFilter()">
+                Reset
+            </span>
+            <span id="jobFilterAdvancedForm" onclick="showEnlargedJobFilterForm()"
+                  class="btn btn-warning btn-outline btn-xs cursor-pointer pull-right">
+                More Options
+            </span>
+
+        </div>
+
+        <div class="panel-body p-l-0 p-r-0 p-t-0 p-b-0">
+            <div class="">
+                <div class="clearfix m-l-0 m-t-0 m-r-0 m-b-0" id="jobFilterBody">
+                    <form id="jobFilterForm">
+                        <div class="clearfix">
+                            <div class="changecol col-sm-12 m-l-0 m-t-0 m-r-0 m-b-0 p-l-15 p-r-15">
+                                <label>Date Range: </label>
+                                <input type="text" class="form-control" name="date_range" id="jobFilterDateRangePicker">
+                            </div>
+                            <div class="changecol col-sm-12 m-l-0 m-t-0 m-r-0 m-b-0 p-l-15 p-r-15">
+                                <label>Job Category:</label>
+                                <select class="form-control" name="job_category" id="jobFilterJobCategory">
+                                    <option selected="" value="">ALL</option>
+                                </select>
+                            </div>
+                            <div class="changecol col-sm-12 m-l-0 m-t-0 m-r-0 m-b-0 p-l-15 p-r-15">
+                                <label>Job Types</label>
+                                <select class="form-control" name="job_type" id="jobFilterJobType">
+                                    <option selected="" value="">ALL</option>
+                                </select>
+                            </div>
+                            <div class="changecol col-sm-12 m-l-0 m-t-0 m-r-0 m-b-0 p-l-15 p-r-15">
+                                <label>Job Status</label>
+                                <select class="form-control" name="job_status" id="jobFilterJobStatus">
+                                    <option selected="" value="">ALL</option>
+                                </select>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-sm-12 m-l-0 m-t-0 m-r-0 m-b-0 p-l-15 p-r-15">
+                                <label>Address</label>
+                                <input class="form-control" id="jobFilterClientAddress" name="full_address"
+                                       type="text"
+                                       autofocus="" autocomplete="off" placeholder="Enter a location">
+                                <input class="form-control" id="jobFilterClientAddressline" name="addressline"
+                                       value="" type="hidden">
+                                <input class="form-control" id="jobFilterClientSuburb" name="suburb" value=""
+                                       type="hidden">
+                                <input class="form-control" id="jobFilterClientState" name="state" value=""
+                                       type="hidden">
+                                <input class="form-control" id="jobFilterClientPostcode" name="postcode" value=""
+                                       type="hidden">
+
+                            </div>
+                        </div>
+                        <div id="jobFilterByClients" class="clearfix m-t-8" style="display: none;">
+                            <hr>
+                            <div class="col-sm-6 m-l-0 m-t-0 m-r-0 m-b-0 p-l-15 p-r-15 pull-left">
+                                <label>Client First Name</label>
+                                <input type="text" class="form-control" name="client_first_name"
+                                       id="client_first_name" value="">
+                            </div>
+                            <div class="col-sm-6 m-l-0 m-t-0 m-r-0 m-b-0 p-l-15 p-r-15 pull-left">
+                                <label>Client Last Name</label>
+                                <input type="text" class="form-control" name="client_last_name"
+                                       id="client_last_name" value="">
+                            </div>
+                            <div class="col-sm-6 m-l-0 m-t-0 m-r-0 m-b-0 p-l-15 p-r-15 pull-left">
+                                <label>Client Phone</label>
+                                <input type="text" class="form-control" name="client_phone"
+                                       id="client_phone" value="">
+                            </div>
+                            <div class="col-sm-6 m-l-0 m-t-0 m-r-0 m-b-0 p-l-15 p-r-15 pull-left">
+                                <label>Job ID</label>
+                                <input type="number" class="form-control" name="job_id"
+                                       id="job_id" value="">
+                            </div>
+                            <div class="col-sm-6 m-l-0 m-t-0 m-r-0 m-b-0 p-l-15 p-r-15 pull-left">
+                                <label>Invoice Number</label>
+                                <input type="text" class="form-control" name="invoice_number"
+                                       id="invoice_number" value="">
+                            </div>
+                            <div class="col-sm-6 m-l-0 m-t-0 m-r-0 m-b-0 p-l-15 p-r-15 pull-left">
+                                <label>Technicians</label>
+                                <select class="form-control validate[required]" id="jobFilterTechnicianId"
+                                        name="technician_id"
+                                        style="width: 100%">
+                                    <option selected="" value="">ALL</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-12 m-l-0 m-t-0 m-r-0 m-b-0 p-t-10 p-l-15 p-r-15">
+                            <button type="button" class="btn btn-primary btn-xs btn-block" onclick="jobFilter()">
+                                Find
+                            </button>
+                        </div>
+                        <div class="col-sm-12 m-l-0 m-t-0 m-r-0 m-b-0 p-l-15 p-r-15 p-t-10">
+                            <div id="filter-message" class="" style=""></div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <ul id="filteredJobs" class="panel-body panel-body m-b-0 external"></ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script src="lib/js/moment.min.js"></script>
+<script src="lib/js/jquery.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLZ9UTfozU7qxZ1SdIP5vnzIjDo_r-k5o&libraries=places"></script>
+<script src="lib/js/jquery.geocomplete.js"></script>
+<script src="lib/js/geocomplete.min.js"></script>
+<script src="lib/js/fullcalendar.min.js"></script>
+<script src="lib/js/jquery-ui.js"></script>
+<script src="lib/js/popper.min.js"></script>
+<script src="lib/js/bootstrap.min.js"></script>
+<script src="lib/js/bootstrap-datepicker.js"></script>
+<script src="lib/js/daterangepicker.js"></script>
+<!--<script src="lib/js/material.min.js"></script>-->
+<script src="lib/js/scheduler.min.js"></script>
+<script src="lib/js/toastr.min.js"></script>
+<script src="constants/schedulerConstants.js"></script>
+<script src="js/util.js"></script>
+<script src="js/schedulerView.js"></script>
+<!--<script src="js/testScheduler.js"></script>-->
+<script src="js/domManipulation.js"></script>
+
+</html>
+

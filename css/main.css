@@ -1,0 +1,146 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
+    font-size: 14px;
+}
+
+#schedulerWrapper {
+    z-index: 1;
+}
+
+#jobFilter {
+    z-index: 2;
+}
+
+#scheduler {
+    -webkit-transition: margin-left .5s;
+    -moz-transition: margin-left .5s;
+    -ms-transition: margin-left .5s;
+    -o-transition: margin-left .5s;
+    transition: margin-left .5s;
+}
+
+.fc-time-area.fc-widget-content {
+    /*background: #ccc;*/
+}
+
+.side-nav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    border-right: 1px solid #f0f0f0;
+    overflow-x: hidden;
+    transition: all .5s ease-in-out;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    background: #f0f0f0;
+}
+
+.btn-close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+.m-t-36 {
+    margin-top: 36px;
+}
+
+.modal-dialog.extra-wide {
+    max-width: 65% !important;
+}
+
+.fc-license-message {
+    display: none !important;
+}
+
+#existingClientsTableWrapper {
+    max-height: 250px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#schedulerHeaderDatePicker {
+    border: 1px solid #449ce5;
+    line-height: 26.59px;
+    height: 26.59px;
+    cursor: pointer;
+    padding: 0;
+    text-align: center;
+    color: #449ce5;
+}
+
+#scheduler {
+    margin: 0 auto;
+    padding: 12px;
+}
+
+#filteredJobs {
+    overflow-x: hidden;
+}
+
+.draggable-placeholder {
+    border: 1px solid #d0d0d0;
+    border-left: 4px solid #2dc3e8;
+    margin: 10px 5px 10px 5px;
+    padding: 10px;
+    background: #fff;
+}
+
+.fc-resource-cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: normal;
+}
+
+.change-view-btn {
+    margin: 0 auto;
+}
+
+.job-card-option {
+    position: absolute;
+    right: 3rem;
+    cursor: pointer;
+}
+
+
+.fc-unthemed td.fc-today {
+    background: #fff;
+}
+
+.disabled-div {
+    color: #212529a1;
+    background: #f5f5f5;
+    margin-right: 12px;
+}
+
+/*CSS overriding for fixed width in AgendaDay View in Scheduler*/
+.fc-view-container {
+    overflow-x: scroll;
+}
+
+.fc-view.fc-agendaDay-view.fc-agenda-view {
+    width: 500%;
+}
+
+/*CSS for the height in agendaDay View in scheduler*/
+.fc-time-grid .fc-slats td {
+    /*height: 2.2em;*/
+    height: 3.5em;
+}
+
+.fc-center > h2 {
+    font-size: 24px;
+}
